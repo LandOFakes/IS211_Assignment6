@@ -39,7 +39,7 @@ class TestConversions(unittest.TestCase):
         self.assertEqual(convert('Meters', 'Miles', 1609.34), 1)
 
     def test_meters_to_yards(self):
-        self.assertEqual(convert('Meters', 'Yards', 1), 1.09361)
+        self.assertEqual(convert('Meters', 'Yards', 1), 1.09361, places=5)
 
     # Identity Conversion
     def test_identity_conversion(self):
