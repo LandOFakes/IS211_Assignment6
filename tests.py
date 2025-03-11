@@ -1,55 +1,65 @@
 import unittest
-from conversions import (
-    convertCelsiusToKelvin, convertCelsiusToFahrenheit,
-    convertFahrenheitToCelsius, convertFahrenheitToKelvin,
-    convertKelvinToCelsius, convertKelvinToFahrenheit
-)
 from conversions_refactored import convert, ConversionNotPossible
 
 class TestConversions(unittest.TestCase):
 
-    def test_convertCelsiusToKelvin(self):
-        self.assertEqual(convertCelsiusToKelvin(0), 273.15)
-        self.assertEqual(convertCelsiusToKelvin(100), 373.15)
+    # Temperature Conversion
+    def test_celsius_to_kelvin(self):
+        self.assertEqual(convert('Celsius', 'Kelvin', 0), 273.15)
+    
+    def test_celsius_to_fahrenheit(self):
+        self.assertEqual(convert('Celsius', 'Fahrenheit', 0), 32)
+    
+    def test_fahrenheit_to_celsius(self):
+        self.assertEqual(convert('Fahrenheit', 'Celsius', 32), 0)
+    
+    def test_fahrenheit_to_kelvin(self):
+        self.assertEqual(convert('Fahrenheit', 'Kelvin', 32), 273.15)
+    
+    def test_kelvin_to_celsius(self):
+        self.assertEqual(convert('Kelvin', 'Celsius', 273.15), 0)
+    
+    def test_kelvin_to_fahrenheit(self):
+        self.assertEqual(convert('Kelvin', 'Fahrenheit', 273.15), 32)
 
-    def test_convertCelsiusToFahrenheit(self):
-        self.assertEqual(convertCelsiusToFahrenheit(0), 32)
-        self.assertEqual(convertCelsiusToFahrenheit(100), 212)
+    # Distance Conversion Tests
+    def test_miles_to_yards(self):
+        self.assertEqual(convert('Miles', 'Yards', 1), 1760)
 
-    def test_convertFahrenheitToCelsius(self):
-        self.assertEqual(convertFahrenheitToCelsius(32), 0)
-        self.assertEqual(convertFahrenheitToCelsius(212), 100)
+    def test_miles_to_meters(self):
+        self.assertEqual(convert('Miles', 'Meters', 1), 1609.34)
 
-    def test_convertFahrenheitToKelvin(self):
-        self.assertEqual(convertFahrenheitToKelvin(32), 273.15)
-        self.assertEqual(convertFahrenheitToKelvin(212), 373.15)
+    def test_yards_to_miles(self):
+        self.assertEqual(convert('Yards', 'Miles', 1760), 1)
 
-    def test_convertKelvinToCelsius(self):
-        self.assertEqual(convertKelvinToCelsius(273.15), 0)
-        self.assertEqual(convertKelvinToCelsius(373.15), 100)
+    def test_yards_to_meters(self):
+        self.assertEqual(convert('Yards', 'Meters', 1), 0.9144)
 
-    def test_convertKelvinToFahrenheit(self):
-        self.assertEqual(convertKelvinToFahrenheit(273.15), 32)
-        self.assertEqual(convertKelvinToFahrenheit(373.15), 212)
+    def test_meters_to_miles(self):
+        self.assertEqual(convert('Meters', 'Miles', 1609.34), 1)
 
-    def test_general_conversion(self):
-        self.assertEqual(convert("Celsius", "Kelvin", 0), 273.15)
-        self.assertEqual(convert("Fahrenheit", "Celsius", 32), 0)
-        self.assertEqual(convert("Kelvin", "Fahrenheit", 373.15), 212)
-    def test_distance_conversion(self):
-        self.assertEqual(convert("Miles", "Yards", 1), 1760)
-        self.assertEqual(convert("Yards", "Meters", 1), 0.91)
-        self.assertEqual(convert("Meters", "Miles", 1609.34), 1)
+    def test_meters_to_yards(self):
+        self.assertEqual(convert('Meters', 'Yards', 1), 1.09361)
 
+    # Identity Conversion
     def test_identity_conversion(self):
-        self.assertEqual(convert("Miles", "Miles", 5), 5)
-        self.assertEqual(convert("Meters", "Meters", 100), 100)
+        self.assertEqual(convert('Celsius', 'Celsius', 100), 100)
+        self.assertEqual(convert('Fahrenheit', 'Fahrenheit', 100), 100)
+        self.assertEqual(convert('Kelvin', 'Kelvin', 100), 100)
+        self.assertEqual(convert('Miles', 'Miles', 100), 100)
+        self.assertEqual(convert('Yards', 'Yards', 100), 100)
+        self.assertEqual(convert('Meters', 'Meters', 100), 100)
 
-
+    # Invalid Conversion 
     def test_invalid_conversion(self):
         with self.assertRaises(ConversionNotPossible):
-            convert("Celsius", "Miles", 100)  # Should raise error
+            convert('Celsius', 'Miles', 100)
+        
+        with self.assertRaises(ConversionNotPossible):
+            convert('Kelvin', 'Yards', 100)
+        
+        with self.assertRaises(ConversionNotPossible):
+            convert('Fahrenheit', 'Meters', 100)
 
-# Run the tests
 if __name__ == '__main__':
     unittest.main()
