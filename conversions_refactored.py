@@ -1,32 +1,37 @@
 class ConversionNotPossible(Exception):
-    pass
-def convert(fromUnit, toUnit, value):
+     pass
 
-if fromUnit == toUnit:
+def convert(fromUnit, toUnit, value):
+   if fromUnit == toUnit:
         return value
 
-    temperature_conversions = {
-        ('Celsius', 'Fahrenheit'): lambda x: (x * 9/5) + 32,
-        ('Celsius', 'Kelvin'): lambda x: x + 273.15,
-        ('Fahrenheit', 'Celsius'): lambda x: (x - 32) * 5/9,
-        ('Fahrenheit', 'Kelvin'): lambda x: (x - 32) * 5/9 + 273.15,
-        ('Kelvin', 'Celsius'): lambda x: x - 273.15,
-        ('Kelvin', 'Fahrenheit'): lambda x: (x - 273.15) * 9/5 + 32,
-    }
+    # Temperature Conversions
+if fromUnit == 'Celsius' and toUnit == 'Kelvin':
+        return value + 273.15
+elif fromUnit == 'Celsius' and toUnit == 'Fahrenheit':
+        return (value * 9/5) + 32
+elif fromUnit == 'Fahrenheit' and toUnit == 'Celsius':
+        return (value - 32) * 5/9
+elif fromUnit == 'Fahrenheit' and toUnit == 'Kelvin':
+        return (value - 32) * 5/9 + 273.15
+elif fromUnit == 'Kelvin' and toUnit == 'Celsius':
+        return value - 273.15
+elif fromUnit == 'Kelvin' and toUnit == 'Fahrenheit':
+        return (value - 273.15) * 9/5 + 32
 
-    distance_conversions = {
-        ('Miles', 'Yards'): lambda x: x * 1760,
-        ('Miles', 'Meters'): lambda x: x * 1609.34,
-        ('Yards', 'Miles'): lambda x: x / 1760,
-        ('Yards', 'Meters'): lambda x: x * 0.9144,
-        ('Meters', 'Miles'): lambda x: x / 1609.34,
-        ('Meters', 'Yards'): lambda x: x / 0.9144,
-    }
+    # Distance Conversions
+elif fromUnit == 'Miles' and toUnit == 'Yards':
+    return value * 1760
+elif fromUnit == 'Miles' and toUnit == 'Meters':
+    return value * 1609.34
+elif fromUnit == 'Yards' and toUnit == 'Miles':
+    return value / 1760
+elif fromUnit == 'Yards' and toUnit == 'Meters':
+    return value * 0.9144
+elif fromUnit == 'Meters' and toUnit == 'Miles':
+    return value / 1609.34
+elif fromUnit == 'Meters' and toUnit == 'Yards':
+    return value * 1.09361
 
-    if (fromUnit, toUnit) in temperature_conversions:
-        return temperature_conversions[(fromUnit, toUnit)](value)
-
-    if (fromUnit, toUnit) in distance_conversions:
-        return distance_conversions[(fromUnit, toUnit)](value)
-
-    raise ConversionNotPossible(f"Conversion from {fromUnit} to {toUnit} is not possible.")
+    # conversion not supported
+raise ConversionNotPossible(f"Cannot convert from {fromUnit} to {toUnit}")
