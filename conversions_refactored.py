@@ -2,6 +2,9 @@ class ConversionNotPossible(Exception):
     pass
 def convert(fromUnit, toUnit, value):
 
+if fromUnit == toUnit:
+        return value
+
     temperature_conversions = {
         ('Celsius', 'Fahrenheit'): lambda x: (x * 9/5) + 32,
         ('Celsius', 'Kelvin'): lambda x: x + 273.15,
