@@ -1,3 +1,5 @@
+class ConversionNotPossible(Exception):
+    pass
 def convert(fromUnit, toUnit, value):
 
     temperature_conversions = {
