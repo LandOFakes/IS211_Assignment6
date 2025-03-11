@@ -1,38 +1,27 @@
-class ConversionNotPossible(Exception):
-    pass
-
 def convert(fromUnit, toUnit, value):
-    conversions = {
-        "Celsius": {
-            "Kelvin": lambda c: c + 273.15,
-            "Fahrenheit": lambda c: (c * 9/5) + 32
-        },
-        "Fahrenheit": {
-            "Celsius": lambda f: (f - 32) * 5/9,
-            "Kelvin": lambda f: (f - 32) * 5/9 + 273.15
-        },
-        "Kelvin": {
-            "Celsius": lambda k: k - 273.15,
-            "Fahrenheit": lambda k: (k - 273.15) * 9/5 + 32
-        },  # Missing comma was needed here
-        "Miles": {
-            "Yards": lambda m: m * 1760,
-            "Meters": lambda m: m * 1609.34
-        },
-        "Yards": {
-            "Miles": lambda y: y / 1760,
-            "Meters": lambda y: y * 0.9144
-        },
-        "Meters": {
-            "Miles": lambda me: me / 1609.34,
-            "Yards": lambda me: me / 0.9144
-        },
-    }
-    
-    if fromUnit == toUnit:
-        return value  # Identity conversion
 
-    try:
-        return round(conversions[fromUnit][toUnit](value), 2)
-    except KeyError:
-        raise ConversionNotPossible(f"Cannot convert {fromUnit} to {toUnit}")
+    temperature_conversions = {
+        ('Celsius', 'Fahrenheit'): lambda x: (x * 9/5) + 32,
+        ('Celsius', 'Kelvin'): lambda x: x + 273.15,
+        ('Fahrenheit', 'Celsius'): lambda x: (x - 32) * 5/9,
+        ('Fahrenheit', 'Kelvin'): lambda x: (x - 32) * 5/9 + 273.15,
+        ('Kelvin', 'Celsius'): lambda x: x - 273.15,
+        ('Kelvin', 'Fahrenheit'): lambda x: (x - 273.15) * 9/5 + 32,
+    }
+
+    distance_conversions = {
+        ('Miles', 'Yards'): lambda x: x * 1760,
+        ('Miles', 'Meters'): lambda x: x * 1609.34,
+        ('Yards', 'Miles'): lambda x: x / 1760,
+        ('Yards', 'Meters'): lambda x: x * 0.9144,
+        ('Meters', 'Miles'): lambda x: x / 1609.34,
+        ('Meters', 'Yards'): lambda x: x / 0.9144,
+    }
+
+    if (fromUnit, toUnit) in temperature_conversions:
+        return temperature_conversions[(fromUnit, toUnit)](value)
+
+    if (fromUnit, toUnit) in distance_conversions:
+        return distance_conversions[(fromUnit, toUnit)](value)
+
+    raise ConversionNotPossible(f"Conversion from {fromUnit} to {toUnit} is not possible.")
